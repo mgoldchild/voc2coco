@@ -26,7 +26,9 @@ $ python voc2coco.py \
 ### 3. Example of usage
 
 ```bash
-$ python voc2coco.py --ann_dir bush_voc/Annotations --ann_ids bush_voc/ImageSets/Main/clinch_train.txt --labels bush_voc/pascal_label_map.pbtxt --output bush_coco/bccd_test_cocoformat.json --ext xml
+$ python voc2coco/voc2coco.py --ann_dir bush_voc/Annotations --ann_ids bush_voc/ImageSets/Main/clinch_train.txt --labels bush_voc/pascal_label_map.pbtxt --output bush_coco/train_annotation.json --ext xml
+
+$ python voc2coco/voc2coco.py --ann_dir bush_voc/Annotations --ann_ids bush_voc/ImageSets/Main/clinch_val.txt --labels bush_voc/pascal_label_map.pbtxt --output bush_coco/test_annotation.json --ext xml
 ```
 
 ### REFERENCES:

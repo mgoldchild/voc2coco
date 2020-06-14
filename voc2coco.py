@@ -6,14 +6,27 @@ from typing import Dict, List
 from tqdm import tqdm
 import re
 
+try:
+    from .string_int_label_map_pb2 import StringIntLabelMap
+except Exception as e:
+    from string_int_label_map_pb2 import StringIntLabelMap
+
+from google.protobuf import text_format
 
 def get_label2id(labels_path: str) -> Dict[str, int]:
-    """id is 1 start"""
-    with open(labels_path, 'r') as f:
-        labels_str = f.read().split()
-    labels_ids = list(range(1, len(labels_str)+1))
-    return dict(zip(labels_str, labels_ids))
+    label_map_dict = {}
+    with open(labels_path, "r") as f:
+        label_map_string = f.read()
+        label_map = StringIntLabelMap()
+        try:
+            text_format.Merge(label_map_string, label_map)
+        except text_format.ParseError:
+            label_map.ParseFromString(label_map_string)
 
+        for id, item in enumerate(label_map.item, 1):
+            label_map_dict[item.name] = id
+
+    return label_map_dict
 
 def get_annpaths(ann_dir_path: str = None,
                  ann_ids_path: str = None,
@@ -28,7 +41,8 @@ def get_annpaths(ann_dir_path: str = None,
     # If use annotaion ids list
     ext_with_dot = '.' + ext if ext != '' else ''
     with open(ann_ids_path, 'r') as f:
-        ann_ids = f.read().split()
+        ann_ids = f.read().split()[0::2] # only even numbers
+        ann_ids = [ann_id.split(".")[0] for ann_id in ann_ids] # only need filename not extension
     ann_paths = [os.path.join(ann_dir_path, aid+ext_with_dot) for aid in ann_ids]
     return ann_paths
 
@@ -62,10 +76,10 @@ def get_coco_annotation_from_obj(obj, label2id):
     assert label in label2id, f"Error: {label} is not in label2id !"
     category_id = label2id[label]
     bndbox = obj.find('bndbox')
-    xmin = int(bndbox.findtext('xmin')) - 1
-    ymin = int(bndbox.findtext('ymin')) - 1
-    xmax = int(bndbox.findtext('xmax'))
-    ymax = int(bndbox.findtext('ymax'))
+    xmin = int(float(bndbox.findtext('xmin'))) - 1
+    ymin = int(float(bndbox.findtext('ymin'))) - 1
+    xmax = int(float(bndbox.findtext('xmax')))
+    ymax = int(float(bndbox.findtext('ymax')))
     assert xmax > xmin and ymax > ymin, f"Box size error !: (xmin, ymin, xmax, ymax): {xmin, ymin, xmax, ymax}"
     o_width = xmax - xmin
     o_height = ymax - ymin
@@ -144,7 +158,6 @@ def main():
         output_jsonpath=args.output,
         extract_num_from_imgid=True
     )
-
 
 if __name__ == '__main__':
     main()

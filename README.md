@@ -8,7 +8,7 @@ We can use COCO API, this is very useful(ex. calculating mAP).
 
 ## NOTE:
 
-This script is only expecting Pascal VOC files which is created by MS VoTT.
+This script is only expecting Pascal VOC files which are created by MS VoTT.
 
 ### 2. Run script
 
@@ -25,23 +25,8 @@ $ python voc2coco.py \
 
 ### 3. Example of usage
 
-In this case, you can convert [Shenggan/BCCD_Dataset: BCCD Dataset is a small-scale dataset for blood cells detection.](https://github.com/Shenggan/BCCD_Dataset) by this script.
-
 ```bash
-$ python voc2coco.py \                                                                                                                                              金  5/24 20:14:59 2019
-    --ann_dir sample/Annotations \
-    --ann_ids sample/dataset_ids/test.txt \
-    --labels sample/labels.txt \
-    --output sample/bccd_test_cocoformat.json \
-    --ext xml
-
-# Check output
-$ ls sample/ | grep bccd_test_cocoformat.json                                                                                                                    金  5/24 20:16:09 2019
-bccd_test_cocoformat.json
-
-# Check output
-cut -f -4 -d , sample/bccd_test_cocoformat.json                                                                                                                金  5/24 20:20:49 2019
-{"images": [{"file_name": "BloodImage_00007.jpg", "height": 480, "width": 640, "id": "BloodImage_00007"}
+$ python voc2coco.py --ann_dir bush_voc/Annotations --ann_ids bush_voc/ImageSets/Main/clinch_train.txt --labels bush_voc/pascal_label_map.pbtxt --output bush_coco/bccd_test_cocoformat.json --ext xml
 ```
 
 ### REFERENCES:

@@ -6,19 +6,9 @@ This is script for converting VOC format XMLs to COCO format json(ex. coco_eval.
 
 We can use COCO API, this is very useful(ex. calculating mAP).
 
-## How to use
+## NOTE:
 
-### 1. Make labels.txt
-
-labels.txt if need for making dictionary for converting label to id.
-
-**Sample labels.txt**
-
-```txt
-Label1
-Label2
-...
-```
+This script is only expecting Pascal VOC files which is created by MS VoTT.
 
 ### 2. Run script
 
@@ -28,17 +18,6 @@ Label2
 $ python voc2coco.py \
     --ann_dir /path/to/annotation/dir \
     --ann_ids /path/to/annotations/ids/list.txt \
-    --labels /path/to/labels.txt \
-    --output /path/to/output.json \
-    <option> --ext xml
-```
-
-
-##### 2.2 Usage 2(Use annotation paths list)
-
-```bash
-$ python voc2coco.py \
-    --ann_paths_list /path/to/annotation/paths.txt \
     --labels /path/to/labels.txt \
     --output /path/to/output.json \
     <option> --ext xml
@@ -64,3 +43,7 @@ bccd_test_cocoformat.json
 cut -f -4 -d , sample/bccd_test_cocoformat.json                                                                                                                金  5/24 20:20:49 2019
 {"images": [{"file_name": "BloodImage_00007.jpg", "height": 480, "width": 640, "id": "BloodImage_00007"}
 ```
+
+### REFERENCES:
+
+- https://github.com/anhlt/faster_rcnn/tree/e60becf4d46856421e681268a06bca7f0dcee699/faster_rcnn/utils/datasets/voc
